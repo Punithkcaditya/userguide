@@ -1,0 +1,2524 @@
+
+
+15/07/2022
+
+  <a href="<?php echo base_url(); ?>" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
+	                        Take Me Home </a>
+
+if(isset($this->session->userdata('logged_in'))  && $_SESSION['logged_in'] == true) {
+
+
+if('<?php echo (!$this->session->userdata('logged_in')) ?>'){
+document.querySelector('.roaga').style.display = 'none';
+}
+
+
+
+
+
+if('<?php echo (!$this->session->userdata('logged_in')) ?>'){
+document.querySelector('#will').style.display = 'none'
+}
+
+
+
+8/7/2022
+
+
+CKEDITOR.plugins.addExternal('youtube', '<?php echo base_url('application/assets/ckeditor/plugins/youtube/plugin.js');?>');
+
+
+
+
+7/7/2022
+
+CKEDITOR.replace('editor1', {
+filebrowserImageBrowseUrl: '<?php echo base_url('application/assets/kcfinder/browse.php');?>'
+});
+
+
+<!-- Overlay For Sidebars -->
+<div class="overlay"></div>
+<!-- #END# Overlay For Sidebars -->
+
+<!-- Sidebarover lay -->
+<div class="sidebar-overlay" data-toggle="sidebar"></div>
+
+<section>
+<!-- Left Sidebar -->
+<aside id="leftsidebar" class="sidebar">
+<!-- User Info -->
+<div class="admin-image">
+<!-- <img src="assets/images/logo-3.png" alt="">  -->
+</div>
+<!-- Menu -->
+<div class="menu main-sidebar">
+<?php $categoriyes = $this->categories_model->get_published_cat(); ?>
+<ul class="list navi-acc" id="documenter_nav">
+<?php foreach ($categoriyes as $categoryy) { ?>
+
+<li class="nav-item dashboard2"><a class="nav-link" href="#">
+<i class="fe fe-chevron-right sidemenu-icon"></i>
+<span class="sidemenu-label"><?php echo $categoryy['title']?></span></a>
+<ul class="children">
+<?php $catid = $categoryy['id'];
+$categoriesmodal = $this->categories_model->get_innercat($catid);
+foreach ($categoriesmodal as $categ) { ?>
+
+<li><a
+href="<?php echo site_url('/blogs/addcomboxtwo/'.$categ['slug'].'/'.$categ['id']); ?>"><?php echo $categ['title']?></a>
+</li>
+<?php } ?>
+</ul>
+
+</li>
+<?php } ?>
+</ul>
+
+</div>
+<!-- #Menu -->
+</aside>
+<!-- #END# Left Sidebar -->
+</section>
+
+<section class="content home">
+
+<div class="container top-margin" style="padding: 28px;">
+<?php if ($this->session->userdata('category_deleted')) { ?>
+<div class="alert alert-dismissible alert-danger">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+<?php echo $this->session->flashdata('category_deleted'); ?>
+</div>
+<?php } ?>
+<?php if ($this->session->userdata('category_create')) { ?>
+<div class="alert alert-dismissible alert-danger">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+<?php echo $this->session->flashdata('category_create'); ?>
+</div>
+<?php } ?>
+<?php if($this->session->userdata('logged_in')){ ?>
+<div style="position: absolute;margin: 13px;left: 0px;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCategory">Add
+Category</button>
+</div>
+<div class="modal fade" id="createCategory">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">Create Category</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<?php echo form_open('categories/create'); ?>
+<div class="modal-body">
+<div class="form-group">
+<label>Category Name</label>
+<input type="text" class="form-control" name="categoryName"
+placeholder="Enter Category Name">
+</div>
+<label>Category Type</label>
+<div class="form-group">
+<select name="category_id" class="form-control">
+
+<option value="1">Type 1</option>
+<option value="2">Type 2</option>
+</select>
+</div>
+</div>
+<div class="modal-footer">
+<button type="submit" class="btn btn-primary">Save</button>
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+<?php echo form_close(); ?>
+</div>
+</div>
+</div>
+<!-- Edit Category -->
+<div class="modal fade" id="editCategory">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">Edit Category</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<?php echo form_open('categories/edit'); ?>
+<div class="modal-body">
+<div class="form-group">
+<label>Category Name</label>
+<input type="text" class="form-control" id="categoryName" name="categoryName"
+placeholder="Enter Category Name">
+</div>
+<div class="form-group">
+<label>Published</label>
+<div class="custom-control custom-radio">
+<input type="radio" id="customRadio1" name="published" class="custom-control-input"
+value="1">
+<label class="custom-control-label" for="customRadio1">Yes</label>
+</div>
+<div class="custom-control custom-radio">
+<input type="radio" id="customRadio2" name="published" class="custom-control-input"
+value="0">
+<label class="custom-control-label" for="customRadio2">No</label>
+</div>
+</div>
+<input type="hidden" id="editCategoryid" name="editCategoryid" value="">
+</div>
+<div class="modal-footer">
+<button type="submit" class="btn btn-primary">Save changes</button>
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+<?php echo form_close(); ?>
+</div>
+</div>
+</div>
+<br>
+<?php } ?>
+</div>
+
+
+<div class="row">
+<div class="col-xs-12">
+<div class="container-fluid">
+<header>
+<h2 class="heading">Category Table</h2>
+</header>
+<div class="contents">
+<div class="table-box">
+<script type="text/javascript"
+src="<?php echo base_url('application/assetstwo/js/jquery.dataTables.min.js'); ?>">
+</script>
+<table class="table table-hover" id="example">
+<thead>
+<tr>
+<th scope="col">#</th>
+<th scope="col">Category Name</th>
+<th scope="col">Published</th>
+<th scope="col">Type</th>
+<th scope="col">Action</th>
+<th scope="col">Created By</th>
+</tr>
+</thead>
+<tbody>
+<?php if (empty($categories)) { ?>
+<tr class="table-secondary">
+<td colspan="10" align="center">No records found.....</th>
+</tr>
+<?php } ?>
+<?php $i=1; foreach($categories as $category): ?>
+<tr class="table-secondary" align="left">
+<th scope="row"><?php echo $i++; ?></th>
+<td><a
+href="<?php echo site_url('/categories/blogs/'.$category['id']); ?>"><?php echo $category['title'] ?></a>
+</td>
+<td><span
+class="<?php echo $category['published'] ? 'text-success' : 'text-danger'; ?>">&check;</span>
+</td>
+<td><?php echo $category['type']; ?>
+</td>
+<td>
+<?php if ($this->session->userdata('user_id') == $category['created_by']) : ?>
+<button type="button" onclick="deleteCategory(this);"
+data-delete="<?php echo base64_encode($category['id']); ?>"
+class="btn btn-outline-primary" title="Delete">
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash"
+	fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+	<path
+		d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z">
+	</path>
+	<path fill-rule="evenodd"
+		d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z">
+	</path>
+</svg>
+</button>
+<button type="button" onclick="editCategory(this);"
+data-edit="<?php echo base64_encode($category['id']); ?>"
+class="btn btn-outline-primary"
+data-published="<?php echo $category['published'] ?>" title="Edit">
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen"
+	fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+	<path fill-rule="evenodd"
+		d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z">
+	</path>
+</svg>
+</button>
+<?php else: ?>
+-
+<?php endif; ?>
+</td>
+<td><?php echo $category['name']; ?></td>
+
+</tr>
+<?php endforeach?>
+</tbody>
+<tfoot>
+<tr>
+<th><input type="text" name="search_engine" value="Search id" class="search_init" />
+</th>
+<th><input type="text" name="search_browser" value="Search Category Name"
+class="search_init" /></th>
+<th></th>
+<th></th>
+<th></th>
+<th><input type="text" name="search_grade" value="Search Created By"
+class="search_init" /></th>
+</tr>
+</tfoot>
+</table>
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+<!-- Footer opened -->
+<div class="main-footer ht-40">
+<div class="pd-t-0-f ht-100p">
+
+</div>
+</div>
+<!-- Footer closed -->
+</section>
+
+<div class="color-bg">
+<!-- <a href="#"><img
+src="<?php echo str_replace('index.php','',site_url());?>application/assetstwo/images/logo.jpg"
+alt="Adminise" /></a> -->
+<!-- nav start-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+<div class="navbar-nav">
+<a class="nav-item nav-link" href="<?php echo base_url(); ?>">Home <span
+class="sr-only">(current)</span></a>
+<a class="nav-item nav-link" href="<?php echo site_url(); ?>/blogs/ems">EMS</a>
+</div>
+</div>
+</nav>
+
+<!-- nav end -->
+
+<div class="sidebar__toggle" data-toggle="sidebar">
+<a class="open-toggle" href="javascript:void(0);"><i class="fe fe-menu"></i></a>
+</div>
+<?php if(!$this->session->userdata('logged_in')): ?>
+<ul class="nav navbar-nav small_width">
+<li class="nav-item mr-8"><a href="<?php echo site_url('signup'); ?>"><i class="fe fe-log-in"></i>Sign-Up</a>
+</li>
+<li class="nav-item mr-8"><a href="<?php echo site_url('login'); ?>"><i class="fe fe-user"></i>Login</a></li>
+</ul>
+<?php else: ?>
+<ul class="nav navbar-nav">
+<li class="nav-item mr-8"><a href="<?php echo site_url('categories'); ?>"><i class="fe fe-file-plus"></i>Add
+Categories</a></li>
+<li class="nav-item mr-8"><a href="<?php echo site_url('blogs/savefour'); ?>"><i class="fe fe-file-plus"></i>Add
+Blogs</a></li>
+<li class="nav-item mr-8"><a href="<?php echo site_url('logout'); ?>"><i class="fe fe-log-out"></i>LogOut</a>
+</li>
+</ul>
+<?php endif; ?>
+</div>
+
+
+
+
+
+<!-- morphing search Js -->
+<!-- start -->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/jquery.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/bootstrap.min.js'); ?>"></script>
+
+
+
+<!-- end -->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/bundles/libscripts.bundle.js'); ?>">
+</script>
+<!-- Lib Scripts Plugin Js -->
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/bundles/morphingsearchscripts.bundle.js'); ?>"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/jquery.accordion.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/jquery.custom-scrollbar.min.js'); ?>">
+</script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/icheck.min.js'); ?>"></script>
+
+
+
+<!-- Jquery Core Js -->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/bundles/vendorscripts.bundle.js'); ?>">
+</script>
+<!-- Lib Scripts Plugin Js -->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/bundles/mainscripts.bundle.js'); ?>">
+</script>
+<!-- Custom Js -->
+
+
+
+
+<!-- Internal Prism js-->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/plugins/prism/prism.js'); ?>"></script>
+
+
+
+<!-- Treeview js-->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/plugins/treeview-prism/prism.js'); ?>">
+</script>
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/plugins/treeview-prism/prism-treeview.js'); ?>"></script>
+
+
+<!-- Perfectscroll js-->
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/plugins/perfect-scrollbar/perfect-scrollbar.min.js'); ?>">
+</script>
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/plugins/perfect-scrollbar/p-scroll.js'); ?>"></script>
+
+
+<!-- Custom js-->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/js/custom.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/js/menuspy.min.js.js'); ?>"></script>
+<!-- demo lib -->
+
+
+<script>
+$('.dashboard2').click(function() {
+if ($(this).find('ul.children')) {
+$(this).find('ul.children').toggle();
+}
+$(this).find("i").toggleClass("fe-chevron-right fe-chevrons-down");
+});
+
+
+
+
+
+
+
+
+function deleteCategory(elmnt) {
+var r = confirm('Are you sure to delete this record ?');
+if (!r) {
+return false;
+}
+var $this = jQuery(elmnt);
+jQuery.post("<?php echo site_url('categories/delete'); ?>", {
+id: $this.attr('data-delete'),
+categoryName: $this.parent().prev().prev().children().text()
+},
+function(data, status) {
+if (data) {
+let row = $this.parent().parent();
+row.hide('slow', function() {
+row.remove();
+});
+//$this.parent().parent().fadeOut().remove();
+//window.location.reload();
+}
+});
+}
+
+function editCategory(elmnt) {
+var $this = jQuery(elmnt);
+jQuery('#editCategory').modal();
+let modal = jQuery('#editCategory');
+let categoryName = $this.parent().prev().prev().children().text();
+console.log(categoryName);
+let id = $this.attr('data-edit');
+let published = $this.attr('data-published');
+jQuery('#categoryName').val(categoryName);
+if (published == '1') {
+jQuery('#customRadio1').val(published).attr('checked', 'checked').trigger('click');
+jQuery('#customRadio2').val('').removeAttr('checked');
+} else if (published == '0') {
+jQuery('#customRadio2').val(published).attr('checked', 'checked').trigger('click');
+jQuery('#customRadio1').val('').removeAttr('checked');
+}
+jQuery('#editCategoryid').val(id);
+}
+
+
+
+//dashboard
+
+
+
+var asInitVals = new Array();
+
+var oTable = $('#example').dataTable({
+"oLanguage": {
+"sSearch": "Search all columns:"
+}
+});
+
+$("tfoot input").keyup(function() {
+/* Filter on the column (the index) of this element */
+oTable.fnFilter(this.value, $("tfoot input").index(this));
+});
+
+
+
+/*
+* Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
+* the footer
+*/
+$("tfoot input").each(function(i) {
+asInitVals[i] = this.value;
+});
+
+$("tfoot input").focus(function() {
+if (this.className == "search_init") {
+this.className = "";
+this.value = "";
+}
+});
+
+$("tfoot input").blur(function(i) {
+if (this.value == "") {
+this.className = "search_init";
+this.value = asInitVals[$("tfoot input").index(this)];
+}
+});
+
+
+
+// dashboard
+
+
+// confused soul
+
+
+$(document).on('ready', function() {
+
+// ______________ Page Loading
+$(window).on("load", function(e) {
+$("#global-loader").fadeOut("slow");
+})
+
+// FOOTER
+
+
+// ______________ Back to Top
+$(window).on("scroll", function(e) {
+if ($(this).scrollTop() > 0) {
+$('#back-to-top').fadeIn('slow');
+} else {
+$('#back-to-top').fadeOut('slow');
+}
+});
+$("#back-to-top").on("click", function(e) {
+$("html, body").animate({
+scrollTop: 0
+}, 600);
+return false;
+});
+
+
+
+$(document).on('click', 'a[href^="#"]', function(event) {
+event.preventDefault();
+
+$('html, body').animate({
+scrollTop: $($.attr(this, 'href')).offset().top
+}, 500);
+});
+
+//   dashboard
+
+
+// dashboard
+
+});
+
+// confused soul end
+
+
+
+
+var elm = document.querySelector('#main-menu');
+var ms = new MenuSpy(elm);
+
+(function() {
+
+if (typeof self === 'undefined' || !self.Prism || !self.document) {
+return;
+}
+
+/**
+* Class name for <pre> which is activating the plugin
+* @type {String}
+*/
+var PLUGIN_CLASS = 'line-numbers';
+
+/**
+* Resizes line numbers spans according to height of line of code
+* @param  {Element} element <pre> element
+*/
+var _resizeElement = function(element) {
+var codeStyles = getStyles(element);
+var whiteSpace = codeStyles['white-space'];
+
+if (whiteSpace === 'pre-wrap' || whiteSpace === 'pre-line') {
+var codeElement = element.querySelector('code');
+var lineNumbersWrapper = element.querySelector('.line-numbers-rows');
+var lineNumberSizer = element.querySelector('.line-numbers-sizer');
+var codeLines = element.textContent.split('\n');
+
+if (!lineNumberSizer) {
+lineNumberSizer = document.createElement('span');
+lineNumberSizer.className = 'line-numbers-sizer';
+
+codeElement.appendChild(lineNumberSizer);
+}
+
+lineNumberSizer.style.display = 'block';
+
+codeLines.forEach(function(line, lineNumber) {
+lineNumberSizer.textContent = line || '\n';
+var lineSize = lineNumberSizer.getBoundingClientRect().height;
+lineNumbersWrapper.children[lineNumber].style.height = lineSize + 'px';
+});
+
+lineNumberSizer.textContent = '';
+lineNumberSizer.style.display = 'none';
+}
+};
+
+/**
+* Returns style declarations for the element
+* @param {Element} element
+*/
+var getStyles = function(element) {
+if (!element) {
+return null;
+}
+
+return window.getComputedStyle ? getComputedStyle(element) : (element.currentStyle || null);
+};
+
+window.addEventListener('resize', function() {
+Array.prototype.forEach.call(document.querySelectorAll('pre.' + PLUGIN_CLASS), _resizeElement);
+});
+
+Prism.hooks.add('complete', function(env) {
+if (!env.code) {
+return;
+}
+
+// works only for <code> wrapped inside <pre> (not inline)
+var pre = env.element.parentNode;
+// Original regex check for class, leaving it here
+// for its redundancy check
+var clsReg = /\s*\bline-numbers\b\s*/;
+// New regex check for opt-out class
+var clsRegB = /\s*\bno-line-numbers\b\s*/;
+
+if (env.element.querySelector(".line-numbers-rows")) {
+// Abort if line numbers already exists
+return;
+}
+
+// Added to facilitate opting out
+if (clsRegB.test(pre.className)) {
+// Respect the opt-out
+return;
+}
+
+if (clsReg.test(env.element.className)) {
+// Remove the class "line-numbers" from the <code>
+env.element.className = env.element.className.replace(clsReg, ' ');
+}
+if (!clsReg.test(pre.className)) {
+// Add the class "line-numbers" to the <pre>
+pre.className += ' line-numbers';
+}
+
+var match = env.code.match(/\n(?!$)/g);
+var linesNum = match ? match.length + 1 : 1;
+var lineNumbersWrapper;
+
+var lines = new Array(linesNum + 1);
+lines = lines.join('<span></span>');
+
+lineNumbersWrapper = document.createElement('span');
+lineNumbersWrapper.setAttribute('aria-hidden', 'true');
+lineNumbersWrapper.className = 'line-numbers-rows';
+lineNumbersWrapper.innerHTML = lines;
+
+if (pre.hasAttribute('data-start')) {
+pre.style.counterReset = 'linenumber ' + (parseInt(pre.getAttribute('data-start'), 10) - 1);
+}
+
+env.element.appendChild(lineNumbersWrapper);
+
+_resizeElement(pre);
+});
+
+}());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- morphing search Js -->
+<!-- start -->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/jquery.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/bootstrap.min.js'); ?>"></script>
+
+
+
+<!-- end -->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/bundles/libscripts.bundle.js'); ?>">
+</script>
+<!-- Lib Scripts Plugin Js -->
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/bundles/morphingsearchscripts.bundle.js'); ?>"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/jquery.accordion.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/jquery.custom-scrollbar.min.js'); ?>">
+</script>
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/icheck.min.js'); ?>"></script>
+
+
+
+<!-- Jquery Core Js -->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/bundles/vendorscripts.bundle.js'); ?>">
+</script>
+<!-- Lib Scripts Plugin Js -->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/bundles/mainscripts.bundle.js'); ?>">
+</script>
+<!-- Custom Js -->
+
+
+
+
+<!-- Internal Prism js-->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/plugins/prism/prism.js'); ?>"></script>
+
+
+
+<!-- Treeview js-->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/plugins/treeview-prism/prism.js'); ?>">
+</script>
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/plugins/treeview-prism/prism-treeview.js'); ?>"></script>
+
+
+<!-- Perfectscroll js-->
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/plugins/perfect-scrollbar/perfect-scrollbar.min.js'); ?>">
+</script>
+<script type="text/javascript"
+src="<?php echo base_url('application/assetsthree/plugins/perfect-scrollbar/p-scroll.js'); ?>"></script>
+
+
+<!-- Custom js-->
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/js/custom.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/js/menuspy.min.js.js'); ?>"></script>
+<!-- demo lib -->
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+6/7/2022
+
+url:'<?=base_url()?>index.php/User/getCityDepartment',"
+
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/icheck.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/js/custom.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/assetsthree/bundles/libscripts.bundle.js'); ?>">
+</script>
+
+
+<label style="margin-top:15px;">Category</label>
+<div class="form-group">
+<select name="category_id" class="form-control">
+<?php foreach($categoriesopt as $categor): ?>
+<option value="<?php echo $categor['id']; ?>">
+<?php echo $categor['title']; ?></option>
+<?php endforeach?>
+</select>
+</div>
+
+
+
+
+$(document).on('ready', function() {
+
+// ______________ Page Loading
+$(window).on("load", function(e) {
+$("#global-loader").fadeOut("slow");
+})
+
+// FOOTER
+document.getElementById("year").innerHTML = new Date().getFullYear();
+
+// ______________ Back to Top
+$(window).on("scroll", function(e) {
+if ($(this).scrollTop() > 0) {
+$('#back-to-top').fadeIn('slow');
+} else {
+$('#back-to-top').fadeOut('slow');
+}
+});
+$("#back-to-top").on("click", function(e) {
+$("html, body").animate({
+scrollTop: 0
+}, 600);
+return false;
+});
+
+
+
+$(document).on('click', 'a[href^="#"]', function(event) {
+event.preventDefault();
+
+$('html, body').animate({
+scrollTop: $($.attr(this, 'href')).offset().top
+}, 500);
+});
+
+//   dashboard
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
+
+<h4>A PHP Error was encountered</h4>
+
+<p>Severity: Notice</p>
+<p>Message:  Undefined index: id</p>
+<p>Filename: models/Blog_model.php</p>
+<p>Line Number: 110</p>
+
+
+<p>Backtrace:</p>
+
+
+
+
+
+
+<p style="margin-left:10px">
+File: E:\xampp\htdocs\CodeIgniter-Blog-project\application\models\Blog_model.php<br />
+Line: 110<br />
+Function: _error_handler			</p>
+
+
+
+
+<p style="margin-left:10px">
+File: E:\xampp\htdocs\CodeIgniter-Blog-project\application\controllers\Blogs.php<br />
+Line: 439<br />
+Function: getcategory			</p>
+
+
+
+
+
+
+<p style="margin-left:10px">
+File: E:\xampp\htdocs\CodeIgniter-Blog-project\index.php<br />
+Line: 315<br />
+Function: require_once			</p>
+
+
+
+
+</div>[]"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/jquery/js/jquery.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/popper.js/js/popper.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/bootstrap/js/bootstrap.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/simplelightbox/simplelightbox.js'); ?>">
+</script>
+<!-- <script type="text/javascript" src="<?php echo base_url('application/demo/lib/simplelightbox/light-box.js'); ?>">
+</script> -->
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/owl-carousel/owl.carousel.js'); ?>">
+</script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/WOW-master/wow.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/counters/waypoints.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/counters/counterup.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/sticky2.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/demo/lib/jquery/js/jquery.js'); ?>"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4-07-2022
+
+<script type="text/javascript" src="<?php echo base_url('application/assetstwo/js/functions.js'); ?>"></script>
+
+
+
+
+<i class="fa-solid fa-angle-right"></i>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+29/06/2022
+
+
+
+<div class="usercomment"><?php echo $value['comments'] ?></div>
+<div class="reply" id="will"><a href="javascript:void(0)"
+class="btn-default btn"
+data-commentID=<?php echo $value['id'] ?>
+onclick="reply(this)">REPLY</a></div>
+<div class="replies"> <?php $result1= $this->blog_model->comment_replies($value['id']);
+if ($result1) {
+# code...
+foreach ($result1 as  $value1) { ?>
+<div class="comment">
+
+<div class="usercomment"><?php echo $value1['reply'] ?>
+</div>
+</div>
+<?php } }?>
+
+
+https://www.youtube.com/watch?v=Hwiyue-w2O4
+
+
+
+
+
+<?php $categories = $this->categories_model->get_max_data();
+
+
+
+
+
+
+
+
+
+
+
+
+
+28/06/2022
+
+
+
+
+<div class="col-xs-4 ">
+<div class="sec-box">
+<a class="closethis">Close</a>
+
+<div class="sec-box">
+<a href="#" class="closethis">Close</a>
+<header>
+<h2 class="heading">Add your Question</h2>
+</header>
+<div class="contents">
+<a href="#" class="togglethis">Toggle</a>
+<div class="comments-box boxpadding">
+<div class="media">
+<div class="media-body">
+<?php 
+$id = $blog['id'];
+$counts = $this->blog_model->countComt($id); ?>
+<h5 class="media-heading"><?php echo $counts ?> Questions</h5>
+<form id="createcommentform">
+<!-- <div class="form-group"><input type="text" class="form-control" placeholder="Name here" id="user_name" name="user_name"></div> -->
+<input type='hidden' name='ne_id'
+value="<?= set_value("ne_id", $blog['id']) ?>" id='ne_id' />
+<input type='hidden' name='created_by'
+value="<?= set_value("created_by", $blog['created_by']) ?>"
+id='created_by' />
+<div class="form-group">
+<textarea class="input form-control" rows="3" id="comments"
+name="comments"
+value="<?= set_value("comments") ?>"></textarea>
+</div>
+
+<div id='submit_button'>
+<button tabindex="-1" class="btn btn-default float-right"
+type="submit" id="addcomment">Add Questions</button>
+</div>
+</form>
+
+<div class="usercomments">
+
+</div>
+<div class="clearfix"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php $result= $this->blog_model->allComment($ne_id);
+foreach ($result as  $value) {}?>
+
+
+
+
+
+
+<div class="sec-box">
+<a href="#" class="closethis">Close</a>
+<header>
+<h2 class="heading">Add your Question</h2>
+</header>
+<div class="contents">
+<a href="#" class="togglethis">Toggle</a>
+<div class="comments-box boxpadding">
+<div class="media">
+<div class="media-body">
+<?php 
+$id = $blog['id'];
+$counts = $this->blog_model->countComt($id); ?>
+<h5 class="media-heading"><?php echo $counts ?> Questions</h5>
+<form id="createcommentform">
+
+<input type='hidden' name='ne_id'
+value="<?= set_value("ne_id", $blog['id']) ?>"
+id='ne_id' />
+<input type='hidden' name='created_by'
+value="<?= set_value("created_by", $blog['created_by']) ?>"
+id='created_by' />
+<div class="form-group">
+<textarea class="input form-control" rows="3" id="comments"
+name="comments"
+value="<?= set_value("comments") ?>"></textarea>
+</div>
+
+<div id='submit_button'>
+<button tabindex="-1" class="btn btn-default float-right"
+type="submit" id="addcomment">Add Questions</button>
+</div>
+</form>
+<div class="usercomments">
+
+</div>
+<div class="clearfix"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- yey -->
+<div class="row replyrow" style="display:none;">
+<div class="col-md-12" align="right">
+<textarea align="center" id="replycomment" class="form-control"
+placeholder="please add comment" cols="30" rows="3"></textarea><br>
+<button class="btn-warning btn" onclick="$('.replyrow').hide();"
+style="background: black;">close</button>
+<button class="btn-primary btn" onclick="isreply=true;" id="addreply">reply</button>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<input type='hidden' name='hid_id<?= $i?>'
+value="<?= set_value("hid_id$i", $blog['id']) ?>"
+id='hid_id<?= $i?>' />
+
+
+<input type='hidden' name='i_val' value="<?= set_value("i_val", $i) ?>" id='i_val' />
+
+
+
+
+
+
+<table class="table">
+<thead>
+<tr>
+<th class="col-md-4">Description</th>
+<th class="col-md-8">Form Elements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-md-4">Title</td>
+<td class="col-md-8">
+<label>Title</label>
+<div class="input-group" style="width:100%;">
+<input type="text" placeholder="Add Title"
+class="form-control"
+value="<?php echo $blog->title; ?>">
+</div>
+</td>
+</tr>
+<tr>
+<td class="col-md-4">Upload Image</td>
+<td class="col-md-8">
+
+<div class="no-img">
+<div class="input-group" style="width:100%;">
+<div class="input-group mb-3">
+<div class="custom-file">
+<input type="hidden" id="old_prod_image"
+name="old_prod_image"
+value="<?php echo $blog->blog_image; ?>">
+<input type="file"
+accept="image/png, image/jpeg, image/jpg"
+name="userfile" class="custom-file-input"
+id="inputGroupFile02">
+<small><?php if(isset($imageError)){echo $imageError;} ?></small>
+
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td class="col-md-4">Video</td>
+<td class="col-md-8">
+
+<div class="input-group" style="width:100%;">
+<label class="custom-file-label" for="v_url">Paste
+Url</label>
+<input type="text" placeholder="add link here" id="v_url"
+class="form-control" name="v_url"
+value="https://youtube.com/watch?v=<?php echo $blog->v_url; ?>">
+</div>
+</td>
+</tr>
+<?php foreach($description->result() as $row): ?>
+<tr>
+<td class="col-md-4">Description</td>
+
+<td class="col-md-8">
+
+<div class="input-group" id="addanother">
+<input type="hidden" name="count_items" id="count_items"
+value="<?= $row->order_no; ?>" />
+<input type="hidden" name="decription_id" id="decription_id"
+value="<?= $row->description_id; ?>" />
+<textarea id="editor<?= $row->order_no;?>"
+class="form-control"
+name="description<?= $row->order_no; ?>"
+placeholder="Add description"><?php echo $row->description; ?></textarea>
+</div>
+</td>
+
+</tr>
+<?php endforeach; ?>
+<tr>
+<td class="col-md-4"></td>
+<td class="col-md-8">
+
+<div class="form-group" style="width:100%;">
+<input type="submit" class="btn btn-primary mb-3"
+value="Update" class="btn btn-default btn-lg">
+<a href="<?= site_url()?>"
+class="btn btn-primary mb-3">BACK</a>
+<button class="btn btn-info addfields mb-3" id="addrow">+
+Add Fields</button>
+<button class="btn btn-info hidebtn mb-3" type="button"
+id="deletebtn">Delete Fields</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+27/06/2022
+
+
+
+<!-- <nav class="navigation">
+<?php echo $sidebar ?>
+</nav> -->
+
+
+<button class='primaryContained float-right'  name="submit"
+id="addcomment">Add Questions</button>
+
+
+<a href="#" class="btn-default btn">Reply</a>
+
+
+
+
+<?php if (isset($category['v_url']) and $category['v_url'] != "") { ?>
+<a href="https://www.youtube.com/watch?v=<?php echo $category['v_url'] ?>"><img src="http://img.youtube.com/vi/<?php echo $category['v_url'] ?>/1.jpg" /></a>
+<?php } else { ?>
+<img alt="<?php echo $category['v_name'] ?>" src=" <?php echo base_url(); ?>application/assets/images/blogs/no-image.jpg"  />
+<?php 	} ?>
+
+
+
+
+
+
+
+<div class="sec-box">
+<a class="closethis">Close</a>
+<header>
+<h2 class="heading">Updating data</h2>
+</header>
+<div class="contents boxpadding">
+<a class="togglethis">Toggle</a>
+<div class="charts-box">
+<div id="updatingdata"></div>
+<script>
+var nReloads = 0;
+function data(offset) {
+var ret = [];
+for (var x = 0; x <= 360; x += 10) {
+var v = (offset + x) % 360;
+ret.push({
+x: x,
+y: Math.sin(Math.PI * v / 180).toFixed(4),
+z: Math.cos(Math.PI * v / 180).toFixed(4)
+});
+}
+return ret;
+}
+var graph = Morris.Line({
+element: 'updatingdata',
+data: data(0),
+xkey: 'x',
+ykeys: ['y', 'z'],
+labels: ['sin()', 'cos()'],
+parseTime: false,
+ymin: -1.0,
+ymax: 1.0,
+hideHover: true
+});
+function update() {
+nReloads++;
+graph.setData(data(5 * nReloads));
+$('#reloadStatus').text(nReloads + ' reloads');
+}
+setInterval(update, 100);
+</script>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="notifi">
+<a href="#"><i class="glyphicon glyphicon-bell"></i>Notifications</a>
+<div class="popdown">
+
+<div class="notificationlist">
+
+<ul>
+<li>
+<h6><a href="#">Vel lundium natoque</a></h6>
+<p>In parturient! Vel lundium natoque</p>
+<span><i class="glyphicon glyphicon-time"></i>2hrs ago</span>
+</li>
+<li>
+<h6><a href="#">Vel lundium natoque</a></h6>
+<p>In parturient! Vel lundium natoque</p>
+<span><i class="glyphicon glyphicon-time"></i>2hrs ago</span>
+</li>
+<li>
+<h6><a href="#">Vel lundium natoque</a></h6>
+<p>In parturient! Vel lundium natoque</p>
+<span><i class="glyphicon glyphicon-time"></i>2hrs ago</span>
+</li>
+<li>
+<h6><a href="#">Vel lundium natoque</a></h6>
+<p>In parturient! Vel lundium natoque</p>
+<span><i class="glyphicon glyphicon-time"></i>2hrs ago</span>
+</li>
+</ul>
+
+<a href="#" class="viewall">View All Notifications</a>
+</div>
+<div class="clearfix"></div>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+26/06/2022
+
+
+
+$this->db->select('b.*');
+$this->db->where('category_id',$catid);
+$query = $this->db->get('blogs as b');
+return $query->result_array();
+
+
+
+
+
+
+<ul>
+<?php $categoriesmodal = $this->categories_model->get_published_cat(); ?>
+<?php foreach ($categoriesmodal as $categ) { ?>
+<li><a href="dashboard<?php echo $categ['id'] ?>.html"><?php echo $categ['title']?></a></li>
+<?php } ?>
+</ul>
+
+
+
+
+
+
+<?php echo $this->blogs->get_innerwat($catid); ?>
+<?= site_url(); ?>/blogs/get_innerwat/<?= $catid  ?>
+
+
+
+
+
+
+
+<nav class="navigation">
+<ul class="navi-acc" id="nav2">
+<li>
+<a href="#dashboard" class="dashboard">Dashboard</a>
+<ul>
+<li><a href="dashboard1.html">Dashboard 1</a></li>
+<li><a href="dashboard2.html">Dashboard 2</a></li>
+</ul>
+</li>
+<li>
+<a href="#layouts" class="layouts">Layouts</a>
+<ul>
+<li><a href="layouts1.html">With Left Sidebar</a></li>
+<li><a href="layouts2.html">With Right Sidebar</a></li>
+<li><a href="layouts3.html">Top Navigation</a></li>
+<li><a href="layouts4.html">Collapsed Sidebar</a></li>
+</ul>
+</li>
+<li>
+<a href="#ui-elements" class="ui-elements">Elements</a>
+<ul>
+<li><a href="tiles.html">Tiles</a></li>
+<li><a href="buttons.html">Buttons</a></li>
+<li><a href="tabs.html">Tabs and Accordion</a></li>
+<li><a href="typography.html">Typography</a></li>
+<li><a href="tooltip.html">Tooltip and Popovers</a></li>
+<li><a href="navbar.html">Navbars</a></li>
+<li><a href="breadcrumbs.html">Breadcrumbs</a></li>
+<li><a href="pagination.html">Pagination</a></li>
+<li><a href="progressbar.html">Progress bars</a></li>
+<li><a href="blockquotes.html">Blockquotes</a></li>
+<li><a href="modals.html">Modals</a></li>
+<li><a href="alerts.html">Alerts</a></li>
+<li><a href="labels.html">Labels</a></li>
+<li><a href="comments.html">Comments</a></li>
+</ul>
+</li>
+<li>
+<a href="#mailbox" class="mailbox">Mailbox<span class="label label-custom1">05</span></a>
+<ul>
+<li><a href="inbox.html">Inbox</a></li>
+<li><a href="compose.html">Compose</a></li>
+<li><a href="emaildetails.html">Email Detail</a></li>
+</ul>
+</li>
+<li>
+<a href="#forms" class="forms">Forms</a>
+<ul>
+<li><a href="basicform.html">Basic Elements</a></li>
+<li><a href="formgroup.html">Input Groups</a></li>
+<li><a href="checkboxes.html">Custom Checkboxes</a></li>
+<li><a href="switches.html">On/Off Switches</a></li>
+<li><a href="wysiwygeditor.html">WYSIWYG Editor</a></li>
+<li><a href="sliders.html">Sliders</a></li>
+</ul>
+</li>
+<li>
+<a href="#pages" class="pages">Tables</a>
+<ul>
+<li><a href="datatables.html">Data Tables</a></li>
+<li><a href="basictables.html">Basic Tables</a></li>
+</ul>
+</li>
+<li>
+<a href="#extras" class="extras">Misc</a>
+<ul>
+<li><a href="icons.html">Icons</a></li>
+<li><a href="calendar.html">Calendar</a></li>
+<li><a href="gallery.html">Gallery</a></li>
+<li><a href="invoice.html">Invoice</a></li>
+<li><a href="404.html">404 Page</a></li>
+</ul>
+</li>
+<li>
+<a href="charts.html" class="charts">Charts</a>
+</li>
+<li>
+<a href="#loginoptions" class="loginoptions">Login Options</a>
+<ul>
+<li><a href="login1.html">Login 1</a></li>
+<li><a href="login2.html">Login 2</a></li>
+<li><a href="lockscreen1.html">Lock Screen 1</a></li>
+<li><a href="lockscreen2.html">Lock Screen 2</a></li>
+</ul>
+</li>
+<li>
+<a href="maps.html" class="maps">Maps</a>
+</li>
+</ul>
+<div class="clearfix"></div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+25/06/2022
+
+
+
+
+
+
+
+
+
+<nav class="navigation">
+<?php $categories = $this->categories_model->get_published_cat(); ?>
+<ul class="navi-acc" id="nav2">
+<?php foreach ($categories as $category) { ?>
+
+<li>
+<a href="#dashboard" id="<?php echo $category['id'] ?>" class="dashboard"><?php echo $category['title']?></a>
+<ul>
+<?php $catid = $category['id'];
+$categoriesmodal = $this->categories_model->get_innercat($catid);
+foreach ($categoriesmodal as $categ) { ?>
+<li><a href="dashboard<?php echo $categ['id'] ?>.html"><?php echo $categ['title']?></a></li>
+<?php } ?>
+</ul>
+</li>
+
+<?php } ?>
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+
+
+$selected = ($category['id'] == $search_cat) ? 'selected="selected"' : '';
+echo '<option '.$selected.' value="'.$category['id'].'">'.$category['title'].'</option>';
+
+
+
+
+
+
+
+
+
+
+
+<!-- <li>
+<a href="#dashboard" id="<?php echo $category['id'] ?>" class="dashboard"><?php echo $category['title']?></a>
+<ul>
+<?php $catid = $category['id'];
+$categoriesmodal = $this->categories_model->get_innercat($catid);
+foreach ($categoriesmodal as $categ) { ?>
+<li><a href="dashboard<?php echo $categ['id'] ?>.html"><?php echo $categ['title']?></a></li>
+<?php } ?>
+</ul>
+</li> -->
+
+<?php } ?>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+23/06/2022
+
+
+
+
+"
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Database Error</title>
+<style type="text/css">
+
+::selection { background-color: #E13300; color: white; }
+::-moz-selection { background-color: #E13300; color: white; }
+
+body {
+background-color: #fff;
+margin: 40px;
+font: 13px/20px normal Helvetica, Arial, sans-serif;
+color: #4F5155;
+}
+
+a {
+color: #003399;
+background-color: transparent;
+font-weight: normal;
+}
+
+h1 {
+color: #444;
+background-color: transparent;
+border-bottom: 1px solid #D0D0D0;
+font-size: 19px;
+font-weight: normal;
+margin: 0 0 14px 0;
+padding: 14px 15px 10px 15px;
+}
+
+code {
+font-family: Consolas, Monaco, Courier New, Courier, monospace;
+font-size: 12px;
+background-color: #f9f9f9;
+border: 1px solid #D0D0D0;
+color: #002166;
+display: block;
+margin: 14px 0 14px 0;
+padding: 12px 10px 12px 10px;
+}
+
+#container {
+margin: 10px;
+border: 1px solid #D0D0D0;
+box-shadow: 0 0 8px #D0D0D0;
+}
+
+p {
+margin: 12px 15px 12px 15px;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<h1>A Database Error Occurred</h1>
+<p>Error Number: 1054</p><p>Unknown column 'user_id' in 'field list'</p><p>INSERT INTO `commentstwo` (`user_id`, `comments`, `createdOn`) VALUES ('Punith KC', 'ogu', '2022-06-23 09:50:59')</p><p>Filename: E:/xampp/htdocs/CodeIgniter-Blog-project/system/database/DB_driver.php</p><p>Line Number: 691</p>	</div>
+</body>
+</html>"
+
+
+style="/* color: blue; */background: blue;padding: 7px;float: right;font-size: 10px;position: absolute;right: -14px;top: 25px;"
+
+
+
+
+
+<?php  $created_by ="<script>document.write(created_by);</script>"; ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+21/06/2022
+
+<p>
+<!-- <a class="btn btn-primary btn-lg" href="<?php echo site_url(); ?>/news/">Read More >></a> -->
+<a class="btn btn-primary btn-lg" href="<?php echo site_url(); ?>/news/show_one/<?php echo $blog['id']; ?>">Read More >></a>
+</p>
+
+
+
+
+
+<p class="lead"><?= $news->ne_desc ?></p>
+
+
+<p><img src="<?php echo base_url(); ?>global/uploads/<?= $news->ne_img ?>"/></p>
+
+
+<!-- <div class="container top-margin">
+<div class="jumbotron" style="box-shadow: rgba(0, 0, 0, 0.3) 12px 12px 5px 1px;">
+<h2><?php echo $blog['title']; ?></h2>
+<span class="badge badge-pill badge-primary"> Posted on: <?php echo $blog['created_on']; ?></span></strong>
+<br>
+<center>
+<img class="img-fluid" src="<?php echo str_replace('index.php', '', site_url()); ?>/application/assets/images/blogs/<?php echo $blog['blog_image']; ?>" height="20%" width="30%">
+</center>
+<hr class="my-4">
+<div>
+<?php echo $blog['description']; ?>
+</div>
+
+<?php if ($this->session->userdata('user_id') == $blog['created_by']) : ?>
+<hr>
+<a class="btn btn-default pull-left" href="<?php echo site_url(); ?>/blogs/edit/<?php echo $blog['slug']; ?>">Edit</a>
+<?php echo form_open('/blogs/delete/'.$blog['id']); ?>
+<input type="submit" value="Delete" class="btn btn-danger">
+</form>
+<?php endif ?>
+</div>
+</div> -->
+<!-- <br> -->
+
+<div class="container">
+<div class="starter-template">
+<h1><?= $blog['title'] ?></h1>
+</div>
+<div class="contact-form">
+<?php echo $comments ?>
+<h3 class="comment-reply-title">Leave a Reply</h3>
+</div>
+</div>
+<p class="notice error"><?= $this->session->flashdata('error_msg') ?></p><br/>
+
+
+<?php
+if (isset($comments)) {
+foreach ($comments as $comment) {
+$this->view('show_one', array('comment' => $comment));
+}
+} ?>
+
+
+
+
+
+
+
+<div class="starter-template">
+<h1><?= $news->title ?></h1>
+<p class="lead"><?= $news->description ?></p>
+<p><img src="<?php echo base_url(); ?>/application/assets/images/blogs/<?php echo $news->blog_image;?>"/></p>
+<p>     </p>
+</div>
+
+
+
+
+
+
+
+
+</div>
+<div class='aut'>".$re['comment_email']."</div>
+<div class='comment-body'>".$re['comment_body']."</div>
+<div class='timestamp'>".date("F j, Y", $re['comment_created'])."</div>
+<a  href='#comment_form' class='reply' id='" . $re['comment_id'] . "'>Replay </a>";
+$html .=$this->in_parent($re['comment_id'],$ne_id, $store_all_id);
+$html .= "</li>";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+21/06/2022 end
+
+
+
+
+
+
+<?php 
+$k = $count;
+$i=1;
+while($k>0){
+?>
+<div class="form-group">
+<label>Description</label>
+<textarea id="editor<?= $i?>" class="form-control" name="description" placeholder="Add description"><?php echo $description->description; ?></textarea>
+</div>
+<?php $i++;
+$k--;
+}?>
+
+
+
+
+
+
+
+$data = [
+'slug'          => $slug,
+'title' 		=> $this->input->post('title'),
+'blog_image' 	=> $blog_image,
+'v_name' 	=> $video_title,
+'v_url' 	=> $video_id,
+'description'	=> $this->input->post('description'),
+'modified_by'	=> $this->session->userdata('user_id')
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT b.*,c.* from blogs b join description c on c.blogs_id = b.id where c.created_by='2' order by b.id DESC
+
+
+SELECT `b`.*, GROUP_CONCAT(c.blogs_id SEPARATOR ',') FROM `blogs` as `b` Left OUTER JOIN `description` as `c` ON `c`.`blogs_id` = `b`.`id`
+
+
+
+<div class="form-group">
+<label>Title</label>
+<!-- <input type="hidden"  id="old"  name="old"  value="<?php echo $blog['blog_image'] ?>"> -->
+<input type="hidden"  id="old"  name="old"  value="<?php echo $blog->blog_image; ?>">
+<!-- <input type="text" class="form-control" name="title" placeholder="Add Title" value="<?php echo $blog['title']; ?>"> -->
+<input type="text" class="form-control" name="title" placeholder="Add Title" value="<?php echo $blog->title;; ?>">
+</div>
+
+ef2720568b822a169c419365acb59405.jpg
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container top-margin text-white bg-dark">
+
+<?php echo validation_errors(); ?>
+
+<?php echo form_open('blogs/update'); ?>
+<!-- <input type="hidden" name="id" value="<?php echo $blog['id']; ?>"> -->
+<input type="hidden" name="id" value="<?php echo $blog->id; ?>">
+
+
+
+<div class="form-group">
+<label>Title</label>
+<!-- <input type="hidden"  id="old"  name="old"  value="<?php echo $blog['blog_image'] ?>"> -->
+<input type="hidden"  id="old"  name="old"  value="<?php echo $blog->blog_image; ?>">
+<!-- <input type="text" class="form-control" name="title" placeholder="Add Title" value="<?php echo $blog['title']; ?>"> -->
+<input type="text" class="form-control" name="title" placeholder="Add Title" value="<?php echo $blog->title;; ?>">
+</div>
+
+
+
+<div class="imagelocation<?php echo $blog['id'] ?>">
+<div class="form-group">
+<label>Image</label>
+<div class="input-group mb-3">
+<div class="custom-file">
+<!-- <img  src="<?php echo str_replace('index.php', '', site_url()); ?>/application/assets/images/blogs/<?php echo $blog['blog_image']; ?>" style="vertical-align:middle;position: absolute;left: 5%;" width="100" height="100"> -->
+<img  src="<?php echo  base_url('/application/assets/images/blogs/'.$blog_model->blog_image); ?>" style="vertical-align:middle;position: absolute;left: 5%;" width="100" height="100">
+<!-- <span style="cursor:pointer;position: absolute;top: -104%;left: 15%;"  onclick="javascript:deleteimage(<?php echo $blog['id'] ?>)">X</span> -->
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="no-img">
+<div class="form-group">
+<label>Image</label>
+<div class="input-group mb-3">
+<div class="custom-file">
+<input type="file" accept="image/png, image/jpeg, image/jpg" name="file" class="custom-file-input" id="inputGroupFile02">
+<label class="custom-file-label" for="inputGroupFile02">Upload Image</label>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+<!-- video start 1 -->
+
+
+<label>Video</label>
+<div class="form-group">
+<label class="custom-file-label" for="v_url">Paste Url</label>
+<!-- <input type="text" placeholder="add link here" id="v_url" class="form-control" name="v_url" value="https://youtube.com/watch?v=<?php echo $blog['v_url']; ?>"> -->
+<input type="text" placeholder="add link here" id="v_url" class="form-control" name="v_url" value="https://youtube.com/watch?v=<?php echo $blog->v_url; ?>">
+</div>
+<!-- video start end -->
+
+
+<div class="form-group">
+<label>Description</label>
+<!-- <textarea id="editor1" class="form-control" name="description" placeholder="Add description"><?php echo $blog['description']; ?></textarea> -->
+<textarea id="editor1" class="form-control" name="description" placeholder="Add description"><?php echo $blog->description; ?></textarea>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div class="form-group">
+<label>Category</label>
+<select name="category_id" class="form-control">
+<?php foreach($categories as $category): ?>
+<option value="<?php echo $category['id']; ?>"><?php echo $category['title']; ?></option>
+<?php endforeach?>
+</select>
+</div> -->
+
+<input type="submit" class="btn btn-primary mb-3" value="Update" class="btn btn-default btn-lg">
+<a href="<?= site_url()?>" class="btn btn-primary mb-3">BACK</a>
+<?php echo form_close(); ?>
+
+</div>
+
+
+<script type="text/javascript">
+CKEDITOR.replace( 'editor1' );
+// document.querySelector('.no-img').style.display = 'none'; 
+
+
+// function deleteimage(image_id)
+// {
+// var answer = confirm ("Are you sure you want to delete from this post?");
+// $(".imagelocation"+image_id).remove(".imagelocation"+image_id);
+// document.querySelector('.no-img').style.display = 'block';
+
+// }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public function update3()
+{
+$id=$this->input->post("id");
+//check login
+if (!$this->session->userdata('logged_in')) {
+redirect('home/login');
+}
+// image update new way
+if($_FILES[file]['name']!="")
+{
+$config['upload_path'] 		= 'E:\xampp\htdocs\CodeIgniter-Blog-project\application\assets\images\blogs';
+$config['allowed_types'] 	= 'gif|jpg|png|jpeg';
+$config['encrypt_name'] 	= TRUE;
+$config['max_size'] 		= '2048';
+$config['max_width'] 		= '2000';
+$config['max_height'] 		= '2000';
+$this->load->library('upload', $config);
+if ( ! $this->upload->do_upload('file'))
+{
+$error = array('error' => $this->upload->display_errors());
+$blog_image = '';
+}
+else
+{
+$data = array('upload_data' => $this->upload->data());
+$blog_image = $data['upload_data']['file_name'];
+}
+}
+else{
+$image_name=$this->input->post('old');
+$data=array('blog_image'=>$image_name);
+$this->blog_model->db_update($data,$id);
+}
+// $this->Students_m->db_update($data,$id);
+// image update new way end
+// update page
+// if (!$this->upload->do_upload()) {
+// 	$errors = $this->upload->display_errors();
+// 	$blog_image = '';
+// } else {
+// 	$data = array('upload_data' => $this->upload->data());
+// 	$blog_image = $data['upload_data']['file_name'];
+// }
+// $config['upload_path'] 		= 'E:\xampp\htdocs\CodeIgniter-Blog-project\application\assets\images\blogs';
+// $config['allowed_types'] 	= 'gif|jpg|png|jpeg';
+// $config['encrypt_name'] 	= TRUE;
+// $config['max_size'] 		= '2048';
+// $config['max_width'] 		= '2000';
+// $config['max_height'] 		= '2000';
+// $this->load->library('upload', $config);
+// video url start
+$url = $this->input->post('v_url');
+parse_str(parse_url($url, PHP_URL_QUERY), $my_array_of_vars);
+// parse youtube url to get id
+$video_id = $my_array_of_vars['v'];
+// Output: AyLY1CYtB_8
+$video_title =  $this->get_youtube_title($video_id);
+// send id and video title to database table
+// here
+// $this->videos_model->create_videos($video_id,$video_title);
+//  video url end
+// *************************************************** \\
+if ($blog_image!="" and $video_id != ""){
+$this->blog_model->update_blog1($blog_image,$video_id,$video_title);
+}
+elseif ($video_id != "") {
+$this->blog_model->update_blog2($video_id,$video_title);
+}
+else{
+$this->blog_model->update_blog();
+}
+// update page end
+$this->session->set_flashdata('blog_updated', 'Your blog has been updated');
+redirect('blogs');
+}
+// **********
+public function edit2($slug)
+{
+//check login
+if (!$this->session->userdata('logged_in')) {
+redirect('home/login');
+}
+$data['blog'] = $this->blog_model->get_blogs($slug);
+//check user
+if ($this->session->userdata('user_id') != $this->blog_model->get_blogs($slug)['created_by']) {
+redirect('blogs');
+}
+// $data['categories'] = $this->blog_model->get_categories();
+// if (empty($data['blog'])) {
+// show_404();
+// }
+$data['title'] = 'Edit blogs';
+$this->load->view('header',array('title'=>'Edit Blog'));
+$this->load->view('blogs/edit', $data);
+$this->load->view('footer');
+}
+// *****
+public function deleteimage()
+{
+$deleteid  = $this->input->post('image_id');
+$data = [
+'blog_image' => '',
+];
+$this->db->where('id', $deleteid);
+$this->db->update('blogs', $data); 
+$verify = $this->db->affected_rows();
+echo $verify;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+third attempt
+
+
+if($this->form_validation->run()){
+$old_prod_image=$this->input->post('old_prod_image');
+// $new_img=$this->input->$_FILES["new_img"]["name"];
+$new_img=$this->input->$_FILES["new_img"]["tmp_name"];
+
+if($new_img == TRUE){
+$updates_img = time().$_FILES["new_img"]['name'];
+$config['upload_path'] 		= './application/assets/images/blogs/';
+$config['allowed_types'] 	= 'gif|jpg|png|jpeg';
+$config['encrypt_name'] 	= TRUE;
+$config['max_size'] 		= '2048';
+$config['max_width'] 		= '2000';
+$config['max_height'] 		= '2000';
+$config['file_name'] 		= $updates_img;
+$this->load->library('upload', $config);
+if ($this->upload->do_upload('new_img'))
+{
+if (file_exists("./application/assets/images/blogs/".$old_prod_image)) {
+unlink("./application/assets/images/blogs/".$old_prod_image);
+}
+}
+}
+else{
+$updates_img = 'noimage.jpg';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php 
+$k = $count;
+$i=1;
+while($k>0){
+?>
+<div class="form-group">
+<label>Description</label>
+<textarea id="editor<?= $i?>" class="form-control" name="description" placeholder="Add description"><?php echo $description->description; ?></textarea>
+</div>
+<?php $i++;
+$k--;
+}?>
+
